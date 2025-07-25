@@ -1,7 +1,7 @@
 import os
 import json
 import requests
-from flask import Flask, request, jsonify, session
+from flask import Flask, request, jsonify, session, render_template
 from dotenv import load_dotenv
 from concurrent.futures import ThreadPoolExecutor
 
@@ -26,8 +26,11 @@ genai.configure(api_key=GEMINI_API_KEY)
 gemini_model = genai.GenerativeModel('gemini-2.5-flash')
 
 
-# --- SEARCH HELPER FUNCTIONS ---
-# (These functions are unchanged and correct)
+@app.route('/')
+def index():
+    """Serves the landing page."""
+    return render_template('index.html')
+
 def search_google(query):
     try:
         service = google_build("customsearch", "v1", developerKey=GOOGLE_API_KEY)
@@ -52,8 +55,7 @@ def search_searchapi_io(query):
     except Exception as e: print(f"SearchApi.io Error: {e}"); return []
 
 
-# --- AI & UTILITY FUNCTIONS ---
-# (These functions are unchanged and correct)
+
 def run_parallel_searches(query):
     with ThreadPoolExecutor(max_workers=3) as executor:
         futures = [executor.submit(f, query) for f in [search_google, search_tavily, search_searchapi_io]]
@@ -86,45 +88,54 @@ def get_conversational_answer(c, f, r): return generate_ai_response(f'Context: "
 @app.route('/search', methods=['GET'])
 def search_api():
     query = request.args.get('query')
-    # Get the mode from a separate parameter, defaulting to 'default'
+
     mode = request.args.get('mode', 'default').lower()
+
+    output_format = request.args.get('output', 'json').lower()
 
     if not query:
         return jsonify({"error": "A 'query' parameter is required."}), 400
 
-    # --- Mode: AI Summary Only ---
+    response_data = None
+
+    response_data = None
+
     if mode == 'summary':
         results = deduplicate_results(run_parallel_searches(query))
-        if not results: return jsonify({"error": "Could not fetch search results."}), 500
-        return jsonify(get_ai_summary(query, results))
+        if not results: response_data = {"error": "Could not fetch search results."}
+        else: response_data = get_ai_summary(query, results)
 
-    # --- Mode: Ranked Links Only ---
     elif mode == 'links':
         results = deduplicate_results(run_parallel_searches(query))
-        if not results: return jsonify({"error": "Could not fetch search results."}), 500
-        return jsonify(get_ranked_links(query, results))
+        if not results: response_data = {"error": "Could not fetch search results."}
+        else: response_data = get_ranked_links(query, results)
 
-    # --- Mode: Conversational Search ---
     elif mode == 'conversation':
         chat_context = session.get('chat_context', '')
         new_search_query = get_contextual_query(chat_context, query)
         results = deduplicate_results(run_parallel_searches(new_search_query))
-        if not results: return jsonify({"error": "Could not fetch results for follow-up."}), 500
-        
-        response = get_conversational_answer(chat_context, query, results)
-        if 'answer' in response:
-            session['chat_context'] = response['answer']
-        return jsonify(response)
+        if not results: response_data = {"error": "Could not fetch results for follow-up."}
+        else:
+            response_data = get_conversational_answer(chat_context, query, results)
+            if 'answer' in response_data:
+                session['chat_context'] = response_data['answer']
     
-    # --- Default Mode (if mode is 'default' or unspecified) ---
+    
     else:
         results = deduplicate_results(run_parallel_searches(query))
-        if not results: return jsonify({"error": "Could not fetch search results."}), 500
-        
-        summary_response = get_ai_summary(query, results)
-        links_response = get_ranked_links(query, results)
-        
-        return jsonify({**summary_response, **links_response})
+        if not results: response_data = {"error": "Could not fetch search results."}
+        else:
+            summary_res = get_ai_summary(query, results)
+            links_res = get_ranked_links(query, results)
+            response_data = {**summary_res, **links_res}
+
+
+   
+    if output_format == 'gui':
+        return render_template('results.html', data=response_data)
+    else: 
+        return jsonify(response_data)
+
 
 if __name__ == '__main__':
     app.run(debug=True, port=5000)

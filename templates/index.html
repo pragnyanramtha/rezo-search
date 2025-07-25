@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rezo Search</title>
+    <!-- Link to the external CSS file -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+    <div class="main-container">
+        <!-- The gradient title -->
+        <h1 class="title">Rezo Search</h1>
+
+        <!-- We use a form tag for semantics, but JS will handle the submission -->
+        <form id="searchForm">
+            <div class="search-container">
+                <!-- Taller text area for input -->
+                <textarea id="queryInput" class="search-input" placeholder="Smart search with conversation mode"></textarea>
+                
+                <!-- Footer with controls -->
+                <div class="controls-footer">
+                    <div class="dropdown-group">
+                        <!-- Mode Selector -->
+                        <div class="custom-select">
+                            <select id="modeSelect" class="select-element">
+                                <option value="default">Default Mode</option>
+                                <option value="summary">Summary</option>
+                                <option value="links">Links</option>
+                                <option value="conversation">Conversation</option>
+                            </select>
+                        </div>
+                        <!-- Response Type Selector -->
+                        <div class="custom-select">
+                            <select id="outputSelect" class="select-element">
+                                <option value="gui">Webpage</option>
+                                <option value="json">JSON</option>
+                            </select>
+                        </div>
+                    </div>
+                    <!-- Search Button -->
+                    <button type="submit" class="search-button">Search</button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <!-- Link to the external JavaScript file before the closing body tag -->
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>

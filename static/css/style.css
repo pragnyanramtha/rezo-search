@@ -1,0 +1,125 @@
+/* Import Google Font */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap');
+
+/* Basic Body Styling */
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: #000000; /* Black background */
+    color: #e8e8e8;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+/* Main Centered Container */
+.main-container {
+    width: 100%;
+    max-width: 800px; /* Wider container */
+    padding: 20px;
+    text-align: center;
+}
+
+/* Gradient Title Styling */
+.title {
+    font-size: 72px;
+    font-weight: 500;
+    margin-bottom: 40px;
+    background: linear-gradient(90deg, #ffd700, #ff8c00, #ff0080, #bf00ff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    color: transparent;
+}
+
+/* The main search box container with gradient border */
+.search-container {
+    background: #1c1c1e; /* Dark inner background */
+    border-radius: 28px; /* Slightly rounded corners */
+    padding: 4px; /* Space for the gradient border */
+    position: relative;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+/* The gradient border itself using a pseudo-element */
+.search-container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: 28px;
+    padding: 2px; /* Border thickness */
+    pointer-events: none;
+    background: linear-gradient(90deg, #ffd700, #ff0080, #bf00ff);
+    -webkit-mask: 
+         linear-gradient(#fff 0 0) content-box, 
+         linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+            mask-composite: exclude;
+}
+
+/* The text input area */
+.search-input {
+    width: 100%;
+    height: 140px; /* Taller search box */
+    background-color: transparent;
+    border: none;
+    outline: none;
+    color: #e8e8e8;
+    font-size: 20px;
+    padding: 20px;
+    box-sizing: border-box; /* Important for padding */
+    resize: none; /* Disables resizing */
+}
+
+/* Container for the controls at the bottom */
+.controls-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+}
+
+.dropdown-group {
+    display: flex;
+    gap: 15px; /* Space between dropdowns */
+}
+
+/* Custom dropdown styling */
+.custom-select {
+    position: relative;
+}
+
+.select-element {
+    background-color: #333;
+    color: #e8e8e8;
+    border: 1px solid #555;
+    border-radius: 6px;
+    padding: 8px 12px;
+    font-size: 14px;
+    cursor: pointer;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+}
+.select-element:hover {
+    border-color: #777;
+}
+
+/* Search Button Styling */
+.search-button {
+    background-color: #4285F4; /* Blue button */
+    border: none;
+    border-radius: 6px;
+    color: white;
+    padding: 10px 24px;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+.search-button:hover {
+    background-color: #5a95f5;
+}

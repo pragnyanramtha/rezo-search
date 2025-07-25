@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Results</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400&display=swap');
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #121212; /* Dark background */
+            color: #e8e8e8; /* Light text */
+            margin: 0;
+            padding: 20px 40px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        a {
+            color: #8ab4f8; /* A nice blue for links */
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+
+        .header {
+            margin-bottom: 40px;
+        }
+        .header h1 {
+            font-size: 24px;
+            font-weight: 400;
+        }
+        .header a {
+            font-size: 14px;
+        }
+
+        .summary-box {
+            background-color: #1e1e1e;
+            border: 1px solid #3c4043;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 40px;
+            font-size: 16px;
+            line-height: 1.6;
+        }
+        .summary-box h2 {
+            margin-top: 0;
+            font-size: 18px;
+            font-weight: 400;
+            color: #e8e8e8;
+        }
+
+        .results-list .result-item {
+            margin-bottom: 30px;
+        }
+        .result-item .title a {
+            font-size: 20px;
+            font-weight: 400;
+        }
+        .result-item .url {
+            font-size: 14px;
+            color: #969ba1; /* Muted color for the URL */
+            margin-top: 4px;
+        }
+        .result-item .snippet {
+            font-size: 14px;
+            color: #bdc1c6; /* Lighter text for snippet */
+            line-height: 1.5;
+            margin-top: 6px;
+        }
+        
+        .error {
+            color: #f28b82;
+            background-color: #2d1a1a;
+            border: 1px solid #5c2b2b;
+            padding: 15px;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Search Results</h1>
+            <a href="/">← New Search</a>
+        </div>
+        
+        <!-- Jinja2 logic to display data from Flask -->
+
+        <!-- Handle API errors -->
+        {% if data.error %}
+            <div class="error">
+                <strong>An error occurred:</strong> {{ data.error }}
+            </div>
+        {% endif %}
+
+        <!-- Display AI Summary -->
+        {% if data.summary %}
+            <div class="summary-box">
+                <h2>AI Summary</h2>
+                <p>{{ data.summary }}</p>
+            </div>
+        {% endif %}
+        
+        <!-- Display Conversational Answer -->
+        {% if data.answer %}
+            <div class="summary-box">
+                <h2>AI Answer</h2>
+                <p>{{ data.answer }}</p>
+            </div>
+        {% endif %}
+
+        <!-- Display Ranked Results -->
+        {% if data.ranked_results %}
+            <div class="results-list">
+                {% for result in data.ranked_results %}
+                    <div class="result-item">
+                        <div class="title">
+                            <a href="{{ result.url }}" target="_blank" rel="noopener noreferrer">{{ result.title }}</a>
+                        </div>
+                        <div class="url">{{ result.url }}</div>
+                        <div class="snippet">{{ result.text }}</div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+        
+         <!-- Display Conversational Links -->
+        {% if data.relevant_urls %}
+            <div class="results-list">
+                <h2>Relevant Links</h2>
+                {% for url in data.relevant_urls %}
+                    <div class="result-item">
+                        <div class="title"><a href="{{ url }}" target="_blank" rel="noopener noreferrer">{{ url }}</a></div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    </div>
+</body>
+</html>
