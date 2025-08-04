@@ -1,6 +1,6 @@
-# Rezo Search: A Smart, AI-Powered Search API
+# Rezo Search: A Smart, AI-Powered Search engine 
 
-Rezo Search is a powerful meta-search API that aggregates results from Google, Tavily, and other sources. It then uses the Google Gemini 2.5 Flash model to intelligently process, rank, and summarize the information, providing users with context-aware and relevant search experiences.
+Rezo Search is a powerful meta-search engine that aggregates results from Google, Tavily, and other sources. It then uses the Google Gemini 2.5 Flash model to intelligently process, rank, and summarize the information, providing users with context-aware and relevant search experiences.
 
 **Live Demo URL:** [https://rezo-search.onrender.com](https://rezo-search.onrender.com)
 
@@ -17,7 +17,7 @@ Rezo Search is a powerful meta-search API that aggregates results from Google, T
 -   **Context-Aware Follow-ups**: Intelligently rewrites search queries in conversational mode to find answers to follow-up questions.
 -   **Easy Deployment**: Ready to be deployed on any modern PaaS like Render or Heroku.
 
-## 🚀 API Usage
+## 🚀 ENGINE API Usage
 
 The API has a single endpoint: `/search`. Behavior is controlled using the `query` and `mode` URL parameters.
 
