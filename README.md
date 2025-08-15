@@ -4,6 +4,8 @@ Rezo Search is a powerful meta-search engine that aggregates results from Google
 
 **Live Demo URL:** [https://rezo-search.onrender.com](https://rezo-search.onrender.com)
 
+**NOTE:** Search results have been limited to 5 per search for conserving API costs. (API credits do not grow on github)
+
 ## ✨ Features
 
 -   **Multi-Source Aggregation**: Fetches results from multiple search providers in parallel for comprehensive coverage.
